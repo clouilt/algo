@@ -20,8 +20,16 @@ int cmpp(int* r, int a, int b, int delta){
 	return r[a] == r[b] && r[a+delta] == r[b+delta];
 }
 
+int len;
+int getHeight(int x, int from){
+	if(!x)
+		return 0;
+	for(int i=from; i<len; ++i)
+		if( str[sa[x]+i] != str[sa[x-1]+i])
+			return i;
+}
+
 int main(){
-	int len;
 	cin>>str;
 	for(len=0; str[len]; ++len)
 		sa[len]=len;
@@ -57,11 +65,16 @@ int main(){
 		}
 	}
 
+	int h[2003];
+	int height[2003];
+	h[0]=getHeight(rank[0], 0);
+	for(int i=1; i<len; ++i)
+		h[i]=getHeight(rank[i], max(0, h[i-1]-1));
 	for(int i=0;i<len;++i)
-		cout<<sa[i]<<endl;
+		height[i]=h[sa[i]];
 
 	for(int i=0;i<len; ++i)
-		cout<<(str+sa[i])<<endl;
+		cout<<height[i]<<' '<<(str+sa[i])<<endl;
 	
 
 	return 0;
